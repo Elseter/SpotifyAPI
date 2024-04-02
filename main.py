@@ -230,8 +230,6 @@ def home():
     for queued_songs in queue["queue"]:
         upcoming.append(queued_songs["name"])
 
-    print(upcoming)
-
     return render_template('home.html', artist=artist, song=song, album_cover=album_cover, queue=upcoming)
 
 
