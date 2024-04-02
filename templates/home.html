@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Currently Playing:</h1>
+        <div id="song-info">
+            <p id="song-name">Song: {{ song }}</p>
+            <p id="artist-name">Artist: {{ artist }}</p>
+            <img id="album-cover" src="{{ album_cover }}" alt="Album Cover">
+        </div>
+        <div class="controls">
+            <button id="previous-btn">Previous</button>
+            <button id="play-btn">Play</button>
+            <button id="pause-btn">Pause</button>
+            <button id="next-btn">Next</button>
+        </div>
+        <div class="queue">
+            <h2>Upcoming Queue:</h2>
+            <ul>
+                {% for track in upcoming %}
+                    <li>{{track}}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script>
+        // Function to handle previous button click
+        document.getElementById("previous-btn").addEventListener("click", function() {
+        window.location.href = "/previous"; // Redirect to /play URL
+    });
+        // Function to handle play button click
+    document.getElementById("play-btn").addEventListener("click", function() {
+        window.location.href = "/play"; // Redirect to /play URL
+    });
+
+    // Function to handle pause button click
+    document.getElementById("pause-btn").addEventListener("click", function() {
+        window.location.href = "/pause"; // Redirect to /pause URL
+    });
+
+    // Function to handle next button click
+    document.getElementById("next-btn").addEventListener("click", function() {
+        window.location.href = "/next"; // Redirect to /next URL
+    });
+        function getCurrentSong() {
+    fetch('/current_song')
+        .then(response => response.json())
+        .then(data => {
+            const currentSongName = document.getElementById('song-name').textContent;
+            const newSongName = data.song; // Access song directly
+
+            if (newSongName !== currentSongName) {
+                // Song has changed, refresh the page
+                location.reload();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Fetch current song every 5 seconds
+setInterval(getCurrentSong, 5000);
+    </script>
+</body>
+</html>
